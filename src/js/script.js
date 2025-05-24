@@ -1,3 +1,10 @@
+// Import fallback data
+import {
+  getRandomFallbackTopic,
+  getAllFallbackTopics,
+  getAllFallbackCategories,
+} from "./fallbackData.js";
+
 // API endpoint
 const API_BASE_URL = "https://dsa-typing-api.onrender.com";
 

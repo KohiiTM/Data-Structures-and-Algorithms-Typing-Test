@@ -1,15 +1,115 @@
 # DSA Typing Practice
 
-A simple web-based typing test application focused on Data Structures and Algorithms (DSA) topics.
+A modern, interactive web application designed to help developers improve their typing speed while learning Data Structures and Algorithms concepts. This project combines typing practice with technical content to create an engaging learning experience.
 
-## Features
+## 🎯 Learning Objectives
 
-- Practice typing with DSA-related content.
-- Tracks Words Per Minute (WPM) and accuracy.
-- Customizable themes and fonts.
-- Zen mode for distraction-free typing.
-- Toggle lowercase mode for typing exercises.
-- Select topics from different DSA categories.
+- **Typing Proficiency**: Improve typing speed and accuracy while working with technical content
+- **DSA Knowledge**: Learn and reinforce understanding of key Data Structures and Algorithms concepts
+- **Problem-Solving Skills**: Practice common problem-solving patterns and techniques
+- **System Design Understanding**: Learn fundamental system design concepts and patterns
+
+## 📚 Content Categories
+
+The application includes comprehensive content across four main categories:
+
+### Data Structures (15 Topics)
+
+- Fundamental structures like Hash Tables, Linked Lists, and Stacks
+- Advanced structures including AVL Trees, Red-Black Trees, and B-Trees
+- Specialized structures like Tries, Segment Trees, and Fenwick Trees
+
+### Algorithms (15 Topics)
+
+- Sorting algorithms (QuickSort, Merge Sort)
+- Search algorithms (Binary Search, A\* Search)
+- Graph algorithms (Dijkstra's, BFS, DFS)
+- Advanced algorithms (Dynamic Programming, Topological Sort)
+
+### System Design (7 Topics)
+
+- Load Balancing and Caching
+- Database Indexing and Sharding
+- Microservices Architecture
+- Message Queues and Rate Limiting
+
+### Problem Solving (7 Topics)
+
+- Common techniques (Sliding Window, Two Pointers)
+- Algorithm applications (Binary Search, Greedy Algorithms)
+- Advanced patterns (Backtracking, Floyd Cycle Finding)
+
+## ✨ Features
+
+- **Real-time Performance Tracking**
+
+  - Words Per Minute (WPM) calculation
+  - Accuracy measurement
+  - Error highlighting
+  - Progress tracking
+
+- **Customizable Learning Environment**
+
+  - Multiple themes (Light, Dark, Medium)
+  - Various font options (Monospace, Sans Serif, Serif)
+  - Zen mode for focused practice
+  - Lowercase mode for code practice
+
+- **User Experience**
+  - Responsive design
+  - Keyboard shortcuts
+  - Collapsible topic menu
+  - Offline support with fallback data
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/dsa-typing-practice.git
+   ```
+
+2. Open `index.html` in your browser or use a local server:
+
+   ```bash
+   # Using Python
+   python -m http.server
+
+   # Using Node.js
+   npx serve
+   ```
+
+3. Start practicing!
+
+## 🎮 Usage
+
+- Use `Ctrl+P` to open settings
+- Use `Ctrl+M` to toggle the topic menu
+- Click on any topic to start practicing
+- Use the "Next Text" button to get a new topic
+
+## 🛠️ Technical Implementation
+
+- Pure HTML, CSS, and JavaScript
+- No external dependencies
+- Modular code structure
+- Offline-first approach with fallback data
+- Responsive design for all devices
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by [MonkeyType](https://monkeytype.com/)'s clean interface and typing experience
+- Built to help developers improve both typing speed and DSA knowledge
+- Combines the best of typing practice tools with technical learning
+- Special thanks to the open-source community for inspiration and resources
 
 ## API Usage
 
@@ -28,12 +128,3 @@ The application uses these endpoints to load typing content dynamically.
 - JavaScript
 - Fetch API for interacting with the backend.
 - `localStorage` for saving user preferences (theme, font, modes).
-
-## Getting Started
-
-To run this application:
-
-1. Clone the repository.
-2. Open the `index.html` file in your web browser.
-
-The application should load the typing content from the API automatically.
