@@ -1,0 +1,685 @@
+// API endpoint
+const API_BASE_URL = "https://dsa-typing-api.onrender.com";
+
+// API endpoints
+const API_ENDPOINTS = {
+  topics: `${API_BASE_URL}/api/topics`,
+  randomTopic: `${API_BASE_URL}/api/topics/random`,
+  categories: `${API_BASE_URL}/api/categories`,
+  health: `${API_BASE_URL}/health`,
+};
+
+// DOM Elements
+const textDisplay = document.getElementById("textDisplay");
+const wpmDisplay = document.getElementById("wpm");
+const accuracyDisplay = document.getElementById("accuracy");
+const newTextButton = document.getElementById("newTextButton");
+const lowercaseToggle = document.getElementById("lowercaseToggle");
+const zenModeToggle = document.getElementById("zenModeToggle");
+const themeButtons = document.querySelectorAll(".theme-btn");
+const fontButtons = document.querySelectorAll(".font-btn");
+const topicTitle = document.getElementById("topicTitle");
+
+// State variables
+let currentText = "";
+let startTime = null;
+let timer = null;
+let correctChars = 0;
+let totalChars = 0;
+let isLowercase = false;
+let isZenMode = false;
+let currentIndex = 0;
+let typedHistory = []; // Array to store the state of each character
+let lastTextIndex = -1; // Track the last used text index
+let totalTime = 0; // Track total typing time
+let lastUpdateTime = null; // Track last WPM update time
+let completedWords = 0; // Track number of completed words
+let currentWordStart = 0;
+let allTopics = []; // Store all topics from API
+let categories = [];
+
+// List of keys that should not count as input
+const modifierKeys = [
+  "Shift",
+  "Control",
+  "Alt",
+  "Meta",
+  "CapsLock",
+  "Tab",
+  "Enter",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "Home",
+  "End",
+  "PageUp",
+  "PageDown",
+  "Insert",
+  "Delete",
+  "Escape",
+  "F1",
+  "F2",
+  "F3",
+  "F4",
+  "F5",
+  "F6",
+  "F7",
+  "F8",
+  "F9",
+  "F10",
+  "F11",
+  "F12",
+];
+
+// Menu functionality
+const menuButton = document.getElementById("menuButton");
+const menuOverlay = document.getElementById("menuOverlay");
+const menu = document.getElementById("menu");
+const closeMenu = document.getElementById("closeMenu");
+
+// Topic menu functionality
+const topicMenuToggle = document.getElementById("topicMenuToggle");
+const topicMenuCollapse = document.getElementById("topicMenuCollapse");
+const topicMenu = document.querySelector(".topic-menu");
+const dataStructuresList = document.getElementById("dataStructuresList");
+const algorithmsList = document.getElementById("algorithmsList");
+const systemDesignList = document.getElementById("systemDesignList");
+const problemSolvingList = document.getElementById("problemSolvingList");
+
+// Populate topic lists
+function populateTopicList(listElement, topics) {
+  topics.forEach((topic) => {
+    const topicItem = document.createElement("div");
+    topicItem.className = "topic-item";
+    topicItem.textContent = topic.topic;
+    topicItem.addEventListener("click", () => {
+      // Remove active class from all items
+      document
+        .querySelectorAll(".topic-item")
+        .forEach((item) => item.classList.remove("active"));
+      // Add active class to clicked item
+      topicItem.classList.add("active");
+      // Update the current text
+      currentText = topic.content;
+      topicTitle.textContent = topic.topic;
+      displayText();
+      resetTest();
+    });
+    listElement.appendChild(topicItem);
+  });
+}
+
+// Categorize topics from API data
+function categorizeTopics(topics) {
+  const categories = {
+    "Data Structures": [],
+    Algorithms: [],
+    "System Design": [],
+    "Problem Solving": [],
+  };
+
+  topics.forEach((topic) => {
+    if (categories[topic.category]) {
+      categories[topic.category].push(topic);
+    }
+  });
+
+  return categories;
+}
+
+// Toggle topic menu on mobile
+topicMenuToggle.addEventListener("click", () => {
+  topicMenu.classList.toggle("active");
+});
+
+// Close topic menu when clicking outside on mobile
+document.addEventListener("click", (e) => {
+  if (
+    window.innerWidth <= 1024 &&
+    !topicMenu.contains(e.target) &&
+    !topicMenuToggle.contains(e.target)
+  ) {
+    topicMenu.classList.remove("active");
+  }
+});
+
+// Load saved theme
+const savedTheme = localStorage.getItem("preferred-theme");
+if (savedTheme) {
+  document.body.setAttribute("data-theme", savedTheme);
+  themeButtons.forEach((btn) => {
+    if (btn.dataset.theme === savedTheme) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+// Load saved lowercase preference
+const savedLowercase = localStorage.getItem("lowercase-mode") === "true";
+lowercaseToggle.checked = savedLowercase;
+isLowercase = savedLowercase;
+
+// Load saved zen mode preference
+const savedZenMode = localStorage.getItem("zen-mode") === "true";
+zenModeToggle.checked = savedZenMode;
+isZenMode = savedZenMode;
+if (isZenMode) {
+  document.body.classList.add("zen-mode");
+}
+
+// Load saved font
+const savedFont = localStorage.getItem("preferred-font");
+if (savedFont) {
+  textDisplay.setAttribute("data-font", savedFont);
+  fontButtons.forEach((btn) => {
+    if (btn.dataset.font === savedFont) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+// Menu open/close
+menuButton.addEventListener("click", () => {
+  menu.classList.add("active");
+  menuOverlay.classList.add("active");
+});
+
+function closeMenuHandler() {
+  menu.classList.remove("active");
+  menuOverlay.classList.remove("active");
+}
+
+closeMenu.addEventListener("click", closeMenuHandler);
+menuOverlay.addEventListener("click", closeMenuHandler);
+
+// Theme switching
+themeButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const theme = btn.dataset.theme;
+    document.body.setAttribute("data-theme", theme);
+    localStorage.setItem("preferred-theme", theme);
+
+    themeButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+// Lowercase toggle
+lowercaseToggle.addEventListener("change", () => {
+  isLowercase = lowercaseToggle.checked;
+  localStorage.setItem("lowercase-mode", isLowercase);
+  loadNewText();
+});
+
+// Zen Mode toggle
+zenModeToggle.addEventListener("change", () => {
+  isZenMode = zenModeToggle.checked;
+  document.body.classList.toggle("zen-mode", isZenMode);
+  localStorage.setItem("zen-mode", isZenMode);
+
+  // Refresh text when toiggling zen mode
+  if (!isZenMode || isZenMode) {
+    loadNewText();
+  }
+});
+
+// Font switching
+fontButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const font = btn.dataset.font;
+    textDisplay.setAttribute("data-font", font);
+    localStorage.setItem("preferred-font", font);
+
+    fontButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+// Load saved menu state
+const savedMenuState = localStorage.getItem("topicMenuCollapsed") === "true";
+if (savedMenuState) {
+  topicMenu.classList.add("collapsed");
+}
+
+// Toggle topic menu collapse
+topicMenuCollapse.addEventListener("click", () => {
+  topicMenu.classList.toggle("collapsed");
+  localStorage.setItem(
+    "topicMenuCollapsed",
+    topicMenu.classList.contains("collapsed")
+  );
+});
+
+// Check API health
+async function checkApiHealth() {
+  try {
+    const response = await fetch(API_ENDPOINTS.health);
+    const data = await response.json();
+    return data.status === "healthy";
+  } catch (error) {
+    console.error("API health check failed:", error);
+    return false;
+  }
+}
+
+// Load categories from API
+async function loadCategories() {
+  try {
+    const response = await fetch(API_ENDPOINTS.categories);
+    const data = await response.json();
+    categories = data.categories;
+    return categories;
+  } catch (error) {
+    console.error("Error loading categories:", error);
+    return [];
+  }
+}
+
+// Test API response
+async function testApiResponse() {
+  try {
+    const response = await fetch(API_ENDPOINTS.topics);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("API Test Response:", {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      data: data,
+    });
+    return data;
+  } catch (error) {
+    console.error("API Test Error:", error);
+    throw error;
+  }
+}
+
+// Initialize the typing test
+async function init() {
+  await loadNewText();
+  setupEventListeners();
+  textDisplay.focus();
+}
+
+// Load a new random text
+async function loadNewText() {
+  try {
+    // Check API health first
+    const isHealthy = await checkApiHealth();
+    if (!isHealthy) {
+      throw new Error("API is not healthy");
+    }
+
+    // If we haven't loaded topics yet, fetch them
+    if (allTopics.length === 0) {
+      console.log("Fetching topics from API..."); // Debug log
+      const data = await testApiResponse();
+
+      // Validate the API response
+      if (!Array.isArray(data)) {
+        console.error("Invalid API response:", {
+          dataExists: !!data,
+          hasTopics: data && "topics" in data,
+          topicsIsArray: data && Array.isArray(data.topics),
+        });
+        throw new Error("Invalid API response format: Expected an array.");
+      }
+
+      allTopics = data;
+
+      // Load categories
+      await loadCategories();
+
+      // Categorize topics and populate lists
+      const categorizedTopics = categorizeTopics(allTopics);
+
+      // Clear existing lists
+      dataStructuresList.innerHTML = "";
+      algorithmsList.innerHTML = "";
+      systemDesignList.innerHTML = "";
+      problemSolvingList.innerHTML = "";
+
+      // Populate lists with categorized topics
+      populateTopicList(
+        dataStructuresList,
+        categorizedTopics["Data Structures"]
+      );
+      populateTopicList(algorithmsList, categorizedTopics["Algorithms"]);
+      populateTopicList(systemDesignList, categorizedTopics["System Design"]);
+      populateTopicList(
+        problemSolvingList,
+        categorizedTopics["Problem Solving"]
+      );
+    }
+
+    // Get a random topic from the API
+    console.log("Fetching random topic..."); // Debug log
+    const response = await fetch(API_ENDPOINTS.randomTopic);
+    const selectedContent = await response.json();
+    console.log("Received random topic:", selectedContent); // Debug log
+
+    currentText = selectedContent.content;
+    topicTitle.textContent = selectedContent.topic;
+
+    // Reset all timing and counting variables
+    startTime = null;
+    lastUpdateTime = null;
+    totalTime = 0;
+    correctChars = 0;
+    totalChars = 0;
+    currentIndex = 0;
+    typedHistory = [];
+    completedWords = 0;
+    currentWordStart = 0;
+
+    // Clear the interval if it exists
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    // Reset displays
+    wpmDisplay.textContent = "0";
+    accuracyDisplay.textContent = "100%";
+
+    displayText();
+    resetTest();
+  } catch (error) {
+    console.error("Error loading new text:", error);
+    // Fallback to static content if API fails
+    const fallbackContent = {
+      topic: "Error Loading Content",
+      content:
+        "There was an error loading the content. Please try again later.",
+    };
+    currentText = fallbackContent.content;
+    topicTitle.textContent = fallbackContent.topic;
+    displayText();
+    resetTest();
+  }
+}
+
+// Display the text with proper formatting
+function displayText() {
+  console.log("Displaying text:", currentText); // Debug log
+  const displayText = isLowercase ? currentText.toLowerCase() : currentText;
+
+  // Clear previous text
+  textDisplay.innerHTML = "";
+
+  // Create and append span elements for each character
+  for (let i = 0; i < displayText.length; i++) {
+    const charSpan = document.createElement("span");
+    charSpan.textContent = displayText[i];
+    charSpan.className = `char${i === 0 ? " current" : ""}`;
+    textDisplay.appendChild(charSpan);
+  }
+}
+
+// Reset the test state
+function resetTest() {
+  currentIndex = 0;
+  correctChars = 0;
+  totalChars = 0;
+  typedHistory = [];
+  completedWords = 0;
+  currentWordStart = 0;
+  wpmDisplay.textContent = "0";
+  accuracyDisplay.textContent = "100%";
+
+  // Reset all characters and set first character as current
+  const chars = textDisplay.querySelectorAll(".char");
+  chars.forEach((char, index) => {
+    char.className = index === 0 ? "char current" : "char";
+  });
+}
+
+// Calculate and update WPM
+function updateWPM() {
+  if (!startTime || isZenMode) return;
+
+  const now = Date.now();
+  const timeElapsed = (now - startTime) / 1000 / 60; // in minutes
+  const wpm = Math.round(completedWords / timeElapsed);
+  wpmDisplay.textContent = wpm;
+}
+
+// Calculate and update accuracy
+function updateAccuracy() {
+  const finalCorrectChars = typedHistory.filter(
+    (state) => state.correct
+  ).length;
+  const totalTypedChars = typedHistory.length;
+  const accuracy =
+    totalTypedChars === 0
+      ? 100
+      : Math.round((finalCorrectChars / totalTypedChars) * 100);
+  accuracyDisplay.textContent = `${accuracy}%`;
+}
+
+// Handle keyboard input
+function handleKeyPress(e) {
+  // Prevent default behavior for modifier keys
+  if (modifierKeys.includes(e.key)) {
+    e.preventDefault();
+    return;
+  }
+
+  // Handle backspace
+  if (e.key === "Backspace") {
+    e.preventDefault();
+
+    // Handle Control+Backspace (delete word)
+    if (e.ctrlKey) {
+      if (currentIndex > 0) {
+        const chars = textDisplay.querySelectorAll(".char");
+        let wordStart = currentIndex;
+
+        // Find the start of the current word
+        while (wordStart > 0 && chars[wordStart - 1].textContent === " ") {
+          wordStart--;
+        }
+        while (wordStart > 0 && chars[wordStart - 1].textContent !== " ") {
+          wordStart--;
+        }
+
+        // Remove all characters in the word from history
+        const charsToRemove = currentIndex - wordStart;
+        for (let i = 0; i < charsToRemove; i++) {
+          typedHistory.pop();
+        }
+
+        // Update current index and character states
+        currentIndex = wordStart;
+        chars[currentIndex].className = "char current";
+
+        // Reset states of characters after the deleted word
+        for (let i = wordStart + 1; i < chars.length; i++) {
+          chars[i].className = "char";
+        }
+
+        // Reset word tracking
+        currentWordStart = currentIndex;
+        updateAccuracy();
+        updateWPM();
+      }
+      return;
+    }
+
+    // Regular backspace
+    if (currentIndex > 0) {
+      currentIndex--;
+      const chars = textDisplay.querySelectorAll(".char");
+
+      // Remove the last typed character from history
+      typedHistory.pop();
+
+      // Update character states
+      chars[currentIndex].className = "char current";
+      if (currentIndex < chars.length - 1) {
+        chars[currentIndex + 1].className = "char";
+      }
+
+      // If we're backspacing into a previous word, update word tracking
+      if (currentText[currentIndex] === " ") {
+        currentWordStart = currentIndex + 1;
+      }
+
+      updateAccuracy();
+      updateWPM();
+    }
+    return;
+  }
+
+  // Start the timer on first character
+  if (!startTime) {
+    startTime = Date.now();
+    lastUpdateTime = startTime;
+    timer = setInterval(updateWPM, 500);
+  }
+
+  const chars = textDisplay.querySelectorAll(".char");
+  const expectedChar = isLowercase
+    ? currentText[currentIndex].toLowerCase()
+    : currentText[currentIndex];
+
+  // Store the state before updating
+  const isCorrect = e.key === expectedChar;
+  typedHistory.push({
+    correct: isCorrect,
+    index: currentIndex,
+  });
+
+  // Update current character
+  chars[currentIndex].className = isCorrect ? "char correct" : "char incorrect";
+
+  // Check if we've completed a word
+  if (expectedChar === " " && isCorrect) {
+    completedWords++;
+  }
+
+  // Move cursor to next character
+  if (currentIndex < chars.length - 1) {
+    chars[currentIndex + 1].className = "char current";
+  }
+
+  currentIndex++;
+  updateAccuracy();
+  updateWPM();
+
+  // Check if we've reached the end of the text
+  if (currentIndex >= currentText.length) {
+    loadNewText();
+  }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+  // Add keydown listener to document instead of textDisplay
+  document.addEventListener("keydown", (e) => {
+    // Check if we're interacting with menu or UI elements
+    const isMenuClick = e.target.closest("#menu") !== null;
+    const isMenuButtonClick = e.target.closest("#menuButton") !== null;
+    const isNewTextButtonClick = e.target.closest("#newTextButton") !== null;
+    const isMenuOverlayClick = e.target.closest("#menuOverlay") !== null;
+    const isTopicMenuClick = e.target.closest(".topic-menu") !== null;
+    const isTopicMenuToggleClick =
+      e.target.closest("#topicMenuToggle") !== null;
+    const isTopicMenuCollapseClick =
+      e.target.closest("#topicMenuCollapse") !== null;
+    const isInputElement =
+      e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA";
+    const isMenuOpen = menu.classList.contains("active");
+    const isTopicMenuOpen = topicMenu.classList.contains("active");
+    const isTopicMenuCollapsed = topicMenu.classList.contains("collapsed");
+
+    // Handle Ctrl+P / Cmd+P to toggle settings menu
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+      e.preventDefault();
+      if (isMenuOpen) {
+        menu.classList.remove("active");
+        menuOverlay.classList.remove("active");
+      } else {
+        menu.classList.add("active");
+        menuOverlay.classList.add("active");
+      }
+      return;
+    }
+
+    // Handle Ctrl+M / Cmd+M to toggle topics menu
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "m") {
+      e.preventDefault();
+      if (window.innerWidth <= 1024) {
+        topicMenu.classList.toggle("active");
+      } else {
+        topicMenu.classList.toggle("collapsed");
+      }
+      return;
+    }
+
+    // Handle space bar
+    if (e.code === "Space") {
+      // Only allow space in typing test area when no menus are open
+      const isTypingTestArea =
+        !isMenuOpen &&
+        !isTopicMenuOpen &&
+        !isMenuClick &&
+        !isMenuButtonClick &&
+        !isNewTextButtonClick &&
+        !isMenuOverlayClick &&
+        !isTopicMenuClick &&
+        !isTopicMenuToggleClick &&
+        !isTopicMenuCollapseClick &&
+        !isInputElement;
+
+      // Always prevent default space behavior (scrolling, etc.)
+      e.preventDefault();
+
+      // Only allow space to be typed in the typing test area
+      if (isTypingTestArea) {
+        handleKeyPress(e);
+      }
+      return;
+    }
+
+    // Only handle typing if not interacting with menu/UI and menu is closed
+    if (
+      !isMenuClick &&
+      !isMenuButtonClick &&
+      !isNewTextButtonClick &&
+      !isMenuOverlayClick &&
+      !isTopicMenuClick &&
+      !isTopicMenuToggleClick &&
+      !isTopicMenuCollapseClick &&
+      !isInputElement &&
+      !isMenuOpen &&
+      !isTopicMenuOpen
+    ) {
+      handleKeyPress(e);
+    }
+  });
+
+  // Add keyboard shortcut hints
+  menuButton.setAttribute("title", "Toggle Settings (Ctrl+P)");
+  topicMenuToggle.setAttribute("title", "Toggle Topics (Ctrl+M)");
+  topicMenuCollapse.setAttribute("title", "Toggle Topics (Ctrl+M)");
+
+  newTextButton.addEventListener("click", loadNewText);
+
+  // Theme switching
+  themeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const theme = button.dataset.theme;
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("preferred-theme", theme);
+      themeButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+    });
+  });
+}
+
+// Start the application
+init();

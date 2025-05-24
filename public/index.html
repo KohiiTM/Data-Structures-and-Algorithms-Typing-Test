@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Test</title>
+    <link rel="stylesheet" href="/src/css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&family=Fira+Code&family=Source+Code+Pro&family=IBM+Plex+Mono&family=Cascadia+Code&family=Roboto&family=Open+Sans&family=Nunito&family=Merriweather&family=Source+Serif+Pro&family=Playfair+Display&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <button class="menu-button" id="menuButton">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="menu" id="menu">
+      <div class="menu-header">
+        <h2 class="menu-title">Settings</h2>
+        <button class="close-button" id="closeMenu">&times;</button>
+      </div>
+
+      <div class="menu-section">
+        <h3 class="section-title">Theme</h3>
+        <div class="theme-selector">
+          <div class="theme-category">
+            <h4>Light Themes</h4>
+            <button class="theme-btn" data-theme="github-light">
+              GitHub Light
+            </button>
+            <button class="theme-btn" data-theme="solarized-light">
+              Solarized Light
+            </button>
+            <button class="theme-btn" data-theme="latte">
+              Catppuccin Latte
+            </button>
+          </div>
+          <div class="theme-category">
+            <h4>Dark Themes</h4>
+            <button class="theme-btn" data-theme="github-dark">
+              GitHub Dark
+            </button>
+            <button class="theme-btn" data-theme="dracula">Dracula</button>
+            <button class="theme-btn" data-theme="one-dark">One Dark</button>
+            <button class="theme-btn" data-theme="mocha">
+              Catppuccin Mocha
+            </button>
+          </div>
+          <div class="theme-category">
+            <h4>Medium Themes</h4>
+            <button class="theme-btn" data-theme="solarized-dark">
+              Solarized Dark
+            </button>
+            <button class="theme-btn" data-theme="frappe">
+              Catppuccin Frappe
+            </button>
+            <button class="theme-btn" data-theme="macchiato">
+              Catppuccin Macchiato
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h3 class="section-title">Display Options</h3>
+        <div class="options-list">
+          <div class="option-item">
+            <label class="option-label">Lowercase Mode</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="lowercaseToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="option-item">
+            <label class="option-label">Zen Mode</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="zenModeToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h3 class="section-title">Font</h3>
+        <div class="font-selector">
+          <div class="font-category">
+            <h4>Monospace</h4>
+            <button class="font-btn" data-font="JetBrains Mono">
+              JetBrains Mono
+            </button>
+            <button class="font-btn" data-font="Fira Code">Fira Code</button>
+            <button class="font-btn" data-font="Source Code Pro">
+              Source Code Pro
+            </button>
+            <button class="font-btn" data-font="IBM Plex Mono">
+              IBM Plex Mono
+            </button>
+            <button class="font-btn" data-font="Cascadia Code">
+              Cascadia Code
+            </button>
+          </div>
+          <div class="font-category">
+            <h4>Sans Serif</h4>
+            <button class="font-btn" data-font="Inter">Inter</button>
+            <button class="font-btn" data-font="Roboto">Roboto</button>
+            <button class="font-btn" data-font="Open Sans">Open Sans</button>
+            <button class="font-btn" data-font="Nunito">Nunito</button>
+          </div>
+          <div class="font-category">
+            <h4>Serif</h4>
+            <button class="font-btn" data-font="Merriweather">
+              Merriweather
+            </button>
+            <button class="font-btn" data-font="Source Serif Pro">
+              Source Serif Pro
+            </button>
+            <button class="font-btn" data-font="Playfair Display">
+              Playfair Display
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="topic-menu">
+        <div class="topic-menu-header">
+          <h2>Topics</h2>
+          <div class="topic-menu-controls">
+            <button
+              class="topic-menu-collapse"
+              id="topicMenuCollapse"
+              title="Collapse menu"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+            <button class="topic-menu-toggle" id="topicMenuToggle">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="topic-categories">
+          <div class="topic-category">
+            <h3>Data Structures</h3>
+            <div class="topic-list" id="dataStructuresList"></div>
+          </div>
+          <div class="topic-category">
+            <h3>Algorithms</h3>
+            <div class="topic-list" id="algorithmsList"></div>
+          </div>
+          <div class="topic-category">
+            <h3>System Design</h3>
+            <div class="topic-list" id="systemDesignList"></div>
+          </div>
+          <div class="topic-category">
+            <h3>Problem Solving</h3>
+            <div class="topic-list" id="problemSolvingList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <h1>DSA Typing Practice</h1>
+            <div class="hotkeys">
+              <span>Ctrl+P: Settings</span>
+              <span>Ctrl+M: Topics</span>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <span class="label">WPM:</span>
+              <span id="wpm">0</span>
+            </div>
+            <div class="stat">
+              <span class="label">Accuracy:</span>
+              <span id="accuracy">100%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-title" id="topicTitle"></div>
+
+        <div class="typing-area">
+          <div
+            class="text-display"
+            id="textDisplay"
+            tabindex="0"
+            role="textbox"
+            aria-label="Typing test area"
+          ></div>
+        </div>
+
+        <div class="controls">
+          <div class="left-controls">
+            <button class="button" id="newTextButton">Next Text</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../src/js/script.js"></script>
+  </body>
+</html>

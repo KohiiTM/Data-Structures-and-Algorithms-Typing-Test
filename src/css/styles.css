@@ -1,0 +1,1503 @@
+/* Reset and Normalize */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default margin and padding */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements */
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+/* Remove default focus styles */
+:focus {
+  outline: none;
+}
+
+/* Remove default tap highlight color on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Prevent sub and sup elements from affecting line height */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/* Remove default table spacing */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove default fieldset styles */
+fieldset {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+/* Remove default legend styles */
+legend {
+  padding: 0;
+}
+
+/* Remove default textarea styles */
+textarea {
+  resize: vertical;
+}
+
+/* Remove default select styles */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default search input styles */
+input[type="search"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Remove default color input styles */
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* Remove default file input styles */
+input[type="file"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default range input styles */
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default progress bar styles */
+progress {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default meter styles */
+meter {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default details marker */
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Remove default dialog styles */
+dialog {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* Remove default mark styles */
+mark {
+  background: none;
+  color: inherit;
+}
+
+/* Remove default ruby styles */
+ruby {
+  ruby-align: center;
+}
+
+/* Remove default bdi styles */
+bdi {
+  unicode-bidi: isolate;
+}
+
+/* Remove default wbr styles */
+wbr {
+  word-break: break-word;
+}
+
+/* Remove default data styles */
+data {
+  font-feature-settings: "tnum";
+}
+
+/* Remove default time styles */
+time {
+  font-feature-settings: "tnum";
+}
+
+/* Remove default code styles */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace;
+  font-size: 1em;
+}
+
+/* Remove default pre styles */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Remove default kbd styles */
+kbd {
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Remove default samp styles */
+samp {
+  font-family: monospace;
+  font-size: 1em;
+}
+
+/* Remove default var styles */
+var {
+  font-style: italic;
+}
+
+/* Remove default dfn styles */
+dfn {
+  font-style: italic;
+}
+
+/* Remove default cite styles */
+cite {
+  font-style: italic;
+}
+
+/* Remove default q styles */
+q {
+  quotes: none;
+}
+
+q::before,
+q::after {
+  content: "";
+  content: none;
+}
+
+/* Remove default abbr styles */
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+
+/* Remove default address styles */
+address {
+  font-style: normal;
+}
+
+/* Remove default blockquote styles */
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default hr styles */
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+/* Remove default main styles */
+main {
+  display: block;
+}
+
+/* Remove default template styles */
+template {
+  display: none;
+}
+
+/* Remove default canvas styles */
+canvas {
+  display: inline-block;
+}
+
+/* Remove default svg styles */
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+/* Remove default iframe styles */
+iframe {
+  border: 0;
+}
+
+/* Remove default object styles */
+object {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Remove default embed styles */
+embed {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Remove default param styles */
+param {
+  display: none;
+}
+
+/* Remove default video styles */
+video {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Remove default audio styles */
+audio {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Remove default source styles */
+source {
+  display: none;
+}
+
+/* Remove default track styles */
+track {
+  display: none;
+}
+
+/* Remove default map styles */
+map {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Remove default area styles */
+area {
+  display: none;
+}
+
+/* Remove default form styles */
+form {
+  margin: 0;
+}
+
+/* Remove default label styles */
+label {
+  display: inline-block;
+}
+
+/* Remove default input styles */
+input {
+  line-height: normal;
+}
+
+/* Remove default button styles */
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+/* Remove default button focus styles */
+button:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="submit"]:focus {
+  outline: none;
+}
+
+/* Remove default button active styles */
+button:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+  outline: none;
+}
+
+/* Remove default button disabled styles */
+button:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled,
+input[type="submit"]:disabled {
+  cursor: default;
+}
+
+/* Remove default input placeholder styles */
+::placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+/* Remove default input autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--bg-primary) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Remove default scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Remove default selection styles */
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* Remove default focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Remove default drag styles */
+[draggable="true"] {
+  cursor: move;
+}
+
+/* Remove default touch callout */
+* {
+  -webkit-touch-callout: none;
+}
+
+/* Remove default user select */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in typing area */
+.text-display {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+:root {
+  /* Default theme (GitHub Light) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --text-primary: rgb(38, 47, 36);
+  --text-secondary: #57606a;
+  --accent: #0969da;
+  --border: #d0d7de;
+  --error: #cf222e;
+  --success: #116329;
+  --menu-bg: #ffffff;
+  --menu-border: #d0d7de;
+  --button-bg: #f6f8fa;
+  --button-hover: #f3f4f6;
+  --button-active: #e9ecef;
+}
+
+/* Theme Categories */
+.theme-category {
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.theme-category h4 {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.theme-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.theme-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.theme-btn::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+  background: var(--button-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.theme-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-btn.active::after {
+  background: white;
+  border-color: white;
+}
+
+/* Theme Variables */
+[data-theme="github-light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+  --accent: #0969da;
+  --border: #d0d7de;
+  --error: #cf222e;
+  --success: #116329;
+  --menu-bg: #ffffff;
+  --menu-border: #d0d7de;
+  --button-bg: #f6f8fa;
+  --button-hover: #f3f4f6;
+  --button-active: #e9ecef;
+}
+
+[data-theme="github-dark"] {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --border: #30363d;
+  --error: #f85149;
+  --success: #238636;
+  --menu-bg: #161b22;
+  --menu-border: #30363d;
+  --button-bg: #21262d;
+  --button-hover: #30363d;
+  --button-active: #3f444c;
+}
+
+[data-theme="dracula"] {
+  --bg-primary: #282a36;
+  --bg-secondary: #44475a;
+  --text-primary: #f8f8f2;
+  --text-secondary: #6272a4;
+  --accent: #bd93f9;
+  --border: #6272a4;
+  --error: #ff5555;
+  --success: #50fa7b;
+  --menu-bg: #44475a;
+  --menu-border: #6272a4;
+  --button-bg: #44475a;
+  --button-hover: #6272a4;
+  --button-active: #7282b4;
+}
+
+[data-theme="one-dark"] {
+  --bg-primary: #282c34;
+  --bg-secondary: #21252b;
+  --text-primary: #abb2bf;
+  --text-secondary: #5c6370;
+  --accent: #61afef;
+  --border: #3e4451;
+  --error: #e06c75;
+  --success: #98c379;
+  --menu-bg: #21252b;
+  --menu-border: #3e4451;
+  --button-bg: #3e4451;
+  --button-hover: #4b5363;
+  --button-active: #5c6370;
+}
+
+[data-theme="solarized-light"] {
+  --bg-primary: #fdf6e3;
+  --bg-secondary: #eee8d5;
+  --text-primary: #657b83;
+  --text-secondary: #93a1a1;
+  --accent: #268bd2;
+  --border: #93a1a1;
+  --error: #dc322f;
+  --success: #859900;
+  --menu-bg: #eee8d5;
+  --menu-border: #93a1a1;
+  --button-bg: #eee8d5;
+  --button-hover: #e6dfc8;
+  --button-active: #dcd6c1;
+}
+
+[data-theme="solarized-dark"] {
+  --bg-primary: #002b36;
+  --bg-secondary: #073642;
+  --text-primary: #93a1a1;
+  --text-secondary: #586e75;
+  --accent: #268bd2;
+  --border: #586e75;
+  --error: #dc322f;
+  --success: #859900;
+  --menu-bg: #073642;
+  --menu-border: #586e75;
+  --button-bg: #073642;
+  --button-hover: #0d4b5a;
+  --button-active: #135a6d;
+}
+
+[data-theme="latte"] {
+  --bg-primary: #eff1f5;
+  --bg-secondary: #e6e9ef;
+  --text-primary: #4c4f69;
+  --text-secondary: #6c6f85;
+  --accent: #1e66f5;
+  --border: #dce0e8;
+  --error: #d20f39;
+  --success: #40a02b;
+  --menu-bg: #e6e9ef;
+  --menu-border: #dce0e8;
+  --button-bg: #e6e9ef;
+  --button-hover: #dce0e8;
+  --button-active: #ccd0da;
+}
+
+[data-theme="frappe"] {
+  --bg-primary: #303446;
+  --bg-secondary: #292c3c;
+  --text-primary: rgb(250, 250, 250);
+  --text-secondary: #a5adce;
+  --accent: #8caaee;
+  --border: #414559;
+  --error: #e78284;
+  --success: #a6d189;
+  --menu-bg: #292c3c;
+  --menu-border: #414559;
+  --button-bg: #414559;
+  --button-hover: #51576d;
+  --button-active: #626880;
+}
+
+[data-theme="macchiato"] {
+  --bg-primary: #24273a;
+  --bg-secondary: #1e2030;
+  --text-primary: #cad3f5;
+  --text-secondary: #a5adcb;
+  --accent: #8aadf4;
+  --border: #363a4f;
+  --error: #ed8796;
+  --success: #a6da95;
+  --menu-bg: #1e2030;
+  --menu-border: #363a4f;
+  --button-bg: #363a4f;
+  --button-hover: #494d64;
+  --button-active: #5b6078;
+}
+
+[data-theme="mocha"] {
+  --bg-primary: #1e1e2e;
+  --bg-secondary: #181825;
+  --text-primary: #cdd6f4;
+  --text-secondary: #a6adc8;
+  --accent: #89b4fa;
+  --border: #313244;
+  --error: #f38ba8;
+  --success: #a6e3a1;
+  --menu-bg: #181825;
+  --menu-border: #313244;
+  --button-bg: #313244;
+  --button-hover: #45475a;
+  --button-active: #585b70;
+}
+
+/* Font Categories */
+.font-category {
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.font-category h4 {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.font-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.font-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Font preview styles */
+.font-btn[data-font="JetBrains Mono"] {
+  font-family: "JetBrains Mono", monospace;
+}
+.font-btn[data-font="Fira Code"] {
+  font-family: "Fira Code", monospace;
+}
+.font-btn[data-font="Source Code Pro"] {
+  font-family: "Source Code Pro", monospace;
+}
+.font-btn[data-font="IBM Plex Mono"] {
+  font-family: "IBM Plex Mono", monospace;
+}
+.font-btn[data-font="Cascadia Code"] {
+  font-family: "Cascadia Code", monospace;
+}
+.font-btn[data-font="Inter"] {
+  font-family: "Inter", sans-serif;
+}
+.font-btn[data-font="Roboto"] {
+  font-family: "Roboto", sans-serif;
+}
+.font-btn[data-font="Open Sans"] {
+  font-family: "Open Sans", sans-serif;
+}
+.font-btn[data-font="Nunito"] {
+  font-family: "Nunito", sans-serif;
+}
+.font-btn[data-font="Merriweather"] {
+  font-family: "Merriweather", serif;
+}
+.font-btn[data-font="Source Serif Pro"] {
+  font-family: "Source Serif Pro", serif;
+}
+.font-btn[data-font="Playfair Display"] {
+  font-family: "Playfair Display", serif;
+}
+
+/* Adjust font sizes for better preview */
+.font-btn[data-font="Playfair Display"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Merriweather"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Source Serif Pro"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Nunito"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Open Sans"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Roboto"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Inter"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Cascadia Code"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="IBM Plex Mono"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Source Code Pro"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="Fira Code"] {
+  font-size: 0.95rem;
+}
+.font-btn[data-font="JetBrains Mono"] {
+  font-size: 0.95rem;
+}
+
+.font-btn::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.font-btn:hover {
+  background: var(--button-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.font-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.font-btn.active::after {
+  background: white;
+  border-color: white;
+}
+
+/* Apply font to text display */
+.text-display[data-font="JetBrains Mono"] {
+  font-family: "JetBrains Mono", monospace;
+}
+.text-display[data-font="Fira Code"] {
+  font-family: "Fira Code", monospace;
+}
+.text-display[data-font="Source Code Pro"] {
+  font-family: "Source Code Pro", monospace;
+}
+.text-display[data-font="IBM Plex Mono"] {
+  font-family: "IBM Plex Mono", monospace;
+}
+.text-display[data-font="Cascadia Code"] {
+  font-family: "Cascadia Code", monospace;
+}
+.text-display[data-font="Inter"] {
+  font-family: "Inter", sans-serif;
+}
+.text-display[data-font="Roboto"] {
+  font-family: "Roboto", sans-serif;
+}
+.text-display[data-font="Open Sans"] {
+  font-family: "Open Sans", sans-serif;
+}
+.text-display[data-font="Nunito"] {
+  font-family: "Nunito", sans-serif;
+}
+.text-display[data-font="Merriweather"] {
+  font-family: "Merriweather", serif;
+}
+.text-display[data-font="Source Serif Pro"] {
+  font-family: "Source Serif Pro", serif;
+}
+.text-display[data-font="Playfair Display"] {
+  font-family: "Playfair Display", serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 1;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.hotkeys {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  justify-content: center;
+  width: 100%;
+}
+
+.hotkeys span {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.hotkeys span:hover {
+  opacity: 1;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  margin-left: 2rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  color: var(--text-secondary);
+}
+
+.typing-area {
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.text-display {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  min-height: 150px;
+  outline: none;
+}
+
+.char {
+  position: relative;
+}
+
+.char.current {
+  background-color: var(--accent);
+  color: white;
+  border-radius: 2px;
+}
+
+.char.correct {
+  color: var(--success);
+}
+
+.char.incorrect {
+  color: var(--error);
+  text-decoration: underline;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--button-hover);
+}
+
+.button:active {
+  background-color: var(--button-active);
+}
+
+/* Menu styles */
+.menu-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.menu-button:hover {
+  background: var(--button-hover);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: var(--menu-bg);
+  border-left: 1px solid var(--menu-border);
+  padding: 1.5rem;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+}
+
+.menu.active {
+  right: 0;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.menu-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.close-button {
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: var(--button-hover);
+  color: var(--text-primary);
+}
+
+.menu-section {
+  margin-bottom: 2rem;
+  background: var(--bg-secondary);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.option-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-label {
+  color: var(--text-primary);
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--button-bg);
+  transition: 0.4s;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 1px;
+  background-color: var(--text-primary);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--accent);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+  background-color: white;
+}
+
+.topic-title {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topic-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* Topic Menu Styles */
+.topic-menu {
+  width: 280px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  transition: all 0.3s ease;
+}
+
+.topic-menu.collapsed {
+  width: 60px;
+  padding: 1rem 0.5rem;
+}
+
+.topic-menu.collapsed .topic-menu-header h2,
+.topic-menu.collapsed .topic-categories {
+  display: none;
+}
+
+.topic-menu.collapsed .topic-menu-collapse svg {
+  transform: rotate(180deg);
+}
+
+.topic-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.topic-menu-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.topic-menu-collapse {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.topic-menu-collapse:hover {
+  color: var(--accent);
+}
+
+.topic-menu-collapse svg {
+  transition: transform 0.3s ease;
+}
+
+.topic-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.topic-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-category {
+  background: var(--bg-primary);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+}
+
+.topic-category h3 {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.topic-item {
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.topic-item:hover {
+  background: var(--button-hover);
+  transform: translateX(4px);
+}
+
+.topic-item.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  min-width: 0; /* Prevents flex item from overflowing */
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .topic-menu {
+    width: 100%;
+    position: relative;
+    top: 0;
+  }
+
+  .topic-menu-toggle {
+    display: block;
+  }
+
+  .topic-categories {
+    display: none;
+  }
+
+  .topic-menu.active .topic-categories {
+    display: flex;
+  }
+}
+
+/* Zen Mode Styles */
+body.zen-mode .stats {
+  display: none;
+}
+
+body.zen-mode .header {
+  justify-content: center;
+}
+
+body.zen-mode .header h1 {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+body.zen-mode .typing-area {
+  margin-top: 2rem;
+}
+
+body.zen-mode .controls {
+  opacity: 0.7;
+}
+
+body.zen-mode .topic-title {
+  opacity: 0.7;
+}
+
+/* Transition for zen mode changes */
+.stats,
+.header,
+.typing-area,
+.controls,
+.topic-title {
+  transition: all 0.3s ease;
+}
