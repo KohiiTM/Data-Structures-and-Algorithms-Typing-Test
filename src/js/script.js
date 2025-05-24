@@ -44,6 +44,7 @@ let completedWords = 0; // Track number of completed words
 let currentWordStart = 0;
 let allTopics = []; // Store all topics from API
 let categories = [];
+let isLoading = false; // Add loading state
 
 // List of keys that should not count as input
 const modifierKeys = [
@@ -94,6 +95,16 @@ const algorithmsList = document.getElementById("algorithmsList");
 const systemDesignList = document.getElementById("systemDesignList");
 const problemSolvingList = document.getElementById("problemSolvingList");
 
+// Toggle topic menu collapse
+topicMenuCollapse.addEventListener("click", () => {
+  topicMenu.classList.toggle("expanded");
+});
+
+// Toggle topic menu on mobile
+topicMenuToggle.addEventListener("click", () => {
+  topicMenu.classList.toggle("active");
+});
+
 // Populate topic lists
 function populateTopicList(listElement, topics) {
   topics.forEach((topic) => {
@@ -134,11 +145,6 @@ function categorizeTopics(topics) {
 
   return categories;
 }
-
-// Toggle topic menu on mobile
-topicMenuToggle.addEventListener("click", () => {
-  topicMenu.classList.toggle("active");
-});
 
 // Close topic menu when clicking outside on mobile
 document.addEventListener("click", (e) => {
@@ -261,8 +267,11 @@ topicMenuCollapse.addEventListener("click", () => {
 // Check API health
 async function checkApiHealth() {
   try {
+    console.log("Making API health check request to:", API_ENDPOINTS.health);
     const response = await fetch(API_ENDPOINTS.health);
+    console.log("API health check response status:", response.status);
     const data = await response.json();
+    console.log("API health check response data:", data);
     return data.status === "healthy";
   } catch (error) {
     console.error("API health check failed:", error);
@@ -286,17 +295,16 @@ async function loadCategories() {
 // Test API response
 async function testApiResponse() {
   try {
+    console.log("Making API test request to:", API_ENDPOINTS.topics);
     const response = await fetch(API_ENDPOINTS.topics);
+    console.log("API test response status:", response.status);
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+
     const data = await response.json();
-    console.log("API Test Response:", {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries()),
-      data: data,
-    });
+    console.log("API test response data:", data);
     return data;
   } catch (error) {
     console.error("API Test Error:", error);
@@ -306,17 +314,38 @@ async function testApiResponse() {
 
 // Initialize the typing test
 async function init() {
-  await loadNewText();
-  setupEventListeners();
-  textDisplay.focus();
+  console.log("Initializing typing test...");
+  try {
+    await loadNewText();
+    console.log("Initial text loaded successfully");
+    setupEventListeners();
+    textDisplay.focus();
+  } catch (error) {
+    console.error("Error during initialization:", error);
+  }
 }
 
 // Load a new random text
 async function loadNewText() {
+  console.log("Starting loadNewText...");
+  // Prevent multiple simultaneous loads
+  if (isLoading) {
+    console.log("Already loading text, skipping...");
+    return;
+  }
+  isLoading = true;
+
   try {
+    // Add a small delay to show results
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     // Check API health first
+    console.log("Checking API health...");
     const isHealthy = await checkApiHealth();
+    console.log("API health check result:", isHealthy);
+
     if (!isHealthy) {
+      console.log("API is not healthy, using fallback content");
       throw new Error("API is not healthy");
     }
 
@@ -336,6 +365,7 @@ async function loadNewText() {
       }
 
       allTopics = data;
+      console.log("Successfully loaded topics:", allTopics.length);
 
       // Load categories
       await loadCategories();
@@ -363,10 +393,20 @@ async function loadNewText() {
     }
 
     // Get a random topic from the API
-    console.log("Fetching random topic..."); // Debug log
+    console.log("Fetching random topic from:", API_ENDPOINTS.randomTopic);
     const response = await fetch(API_ENDPOINTS.randomTopic);
+    console.log("Random topic response status:", response.status);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const selectedContent = await response.json();
-    console.log("Received random topic:", selectedContent); // Debug log
+    console.log("Received random topic:", selectedContent);
+
+    if (!selectedContent || !selectedContent.content) {
+      throw new Error("Invalid topic content received from API");
+    }
 
     currentText = selectedContent.content;
     topicTitle.textContent = selectedContent.topic;
@@ -397,15 +437,36 @@ async function loadNewText() {
   } catch (error) {
     console.error("Error loading new text:", error);
     // Fallback to static content if API fails
-    const fallbackContent = {
-      topic: "Error Loading Content",
-      content:
-        "There was an error loading the content. Please try again later.",
-    };
-    currentText = fallbackContent.content;
-    topicTitle.textContent = fallbackContent.topic;
+    const fallbackTopics = getAllFallbackTopics();
+    if (!fallbackTopics || fallbackTopics.length === 0) {
+      console.error("No fallback topics available");
+      // Use hardcoded fallback as last resort
+      const emergencyFallback = {
+        topic: "Data Structures",
+        content:
+          "A data structure is a specialized format for organizing, processing, retrieving and storing data. Common data structures include arrays, linked lists, stacks, queues, trees, and graphs. Each structure has its own advantages and use cases in different scenarios.",
+      };
+      currentText = emergencyFallback.content;
+      topicTitle.textContent = emergencyFallback.topic;
+    } else {
+      const randomFallback =
+        fallbackTopics[Math.floor(Math.random() * fallbackTopics.length)];
+      currentText = randomFallback.content;
+      topicTitle.textContent = randomFallback.topic;
+    }
+
+    // Ensure we have valid content
+    if (!currentText) {
+      console.error("Fallback content is empty, using emergency fallback");
+      currentText =
+        "A data structure is a specialized format for organizing, processing, retrieving and storing data. Common data structures include arrays, linked lists, stacks, queues, trees, and graphs.";
+      topicTitle.textContent = "Data Structures";
+    }
+
     displayText();
     resetTest();
+  } finally {
+    isLoading = false;
   }
 }
 
@@ -601,7 +662,7 @@ function setupEventListeners() {
       e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA";
     const isMenuOpen = menu.classList.contains("active");
     const isTopicMenuOpen = topicMenu.classList.contains("active");
-    const isTopicMenuCollapsed = topicMenu.classList.contains("collapsed");
+    const isTopicMenuExpanded = topicMenu.classList.contains("expanded");
 
     // Handle Ctrl+P / Cmd+P to toggle settings menu
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
@@ -622,7 +683,7 @@ function setupEventListeners() {
       if (window.innerWidth <= 1024) {
         topicMenu.classList.toggle("active");
       } else {
-        topicMenu.classList.toggle("collapsed");
+        topicMenu.classList.toggle("expanded");
       }
       return;
     }
