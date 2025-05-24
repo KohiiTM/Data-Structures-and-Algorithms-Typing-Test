@@ -113,7 +113,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## API Usage
 
-This application fetches typing exercises from the [DSA Typing Practice API](https://dsa-typing-api.onrender.com/api-docs/). As described in the API's documentation (`https://github.com/KohiiTM/DSA-Typing-API`), the key endpoints used are:
+This application fetches typing exercises from the [DSA Typing Practice API](https://dsa-typing-api.onrender.com/api-docs/). As described in the [API's documentation](https://github.com/KohiiTM/DSA-Typing-API), the key endpoints used are:
 
 - `GET /api/topics`: Fetches the full list of available DSA topics.
 - `GET /api/topics/random`: Fetches a random topic for practice.
