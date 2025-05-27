@@ -36,17 +36,17 @@ let totalChars = 0;
 let isLowercase = false;
 let isZenMode = false;
 let currentIndex = 0;
-let typedHistory = []; // Array to store the state of each character
-let lastTextIndex = -1; // Track the last used text index
-let totalTime = 0; // Track total typing time
-let lastUpdateTime = null; // Track last WPM update time
-let completedWords = 0; // Track number of completed words
+let typedHistory = [];
+let lastTextIndex = -1;
+let totalTime = 0;
+let lastUpdateTime = null;
+let completedWords = 0;
 let currentWordStart = 0;
-let allTopics = []; // Store all topics from API
+let allTopics = [];
 let categories = [];
-let isLoading = false; // Add loading state
+let isLoading = false;
 
-// List of keys that should not count as input
+// Don't count as input
 const modifierKeys = [
   "Shift",
   "Control",
@@ -327,59 +327,32 @@ async function init() {
 
 // Load a new random text
 async function loadNewText() {
-  console.log("Starting loadNewText...");
-  // Prevent multiple simultaneous loads
-  if (isLoading) {
-    console.log("Already loading text, skipping...");
-    return;
-  }
+  if (isLoading) return;
   isLoading = true;
 
   try {
-    // Add a small delay to show results
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Check API health first
-    console.log("Checking API health...");
     const isHealthy = await checkApiHealth();
-    console.log("API health check result:", isHealthy);
 
     if (!isHealthy) {
-      console.log("API is not healthy, using fallback content");
       throw new Error("API is not healthy");
     }
 
-    // If we haven't loaded topics yet, fetch them
     if (allTopics.length === 0) {
-      console.log("Fetching topics from API..."); // Debug log
       const data = await testApiResponse();
 
-      // Validate the API response
       if (!Array.isArray(data)) {
-        console.error("Invalid API response:", {
-          dataExists: !!data,
-          hasTopics: data && "topics" in data,
-          topicsIsArray: data && Array.isArray(data.topics),
-        });
         throw new Error("Invalid API response format: Expected an array.");
       }
 
       allTopics = data;
-      console.log("Successfully loaded topics:", allTopics.length);
-
-      // Load categories
       await loadCategories();
-
-      // Categorize topics and populate lists
       const categorizedTopics = categorizeTopics(allTopics);
 
-      // Clear existing lists
       dataStructuresList.innerHTML = "";
       algorithmsList.innerHTML = "";
       systemDesignList.innerHTML = "";
       problemSolvingList.innerHTML = "";
 
-      // Populate lists with categorized topics
       populateTopicList(
         dataStructuresList,
         categorizedTopics["Data Structures"]
@@ -392,17 +365,13 @@ async function loadNewText() {
       );
     }
 
-    // Get a random topic from the API
-    console.log("Fetching random topic from:", API_ENDPOINTS.randomTopic);
     const response = await fetch(API_ENDPOINTS.randomTopic);
-    console.log("Random topic response status:", response.status);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const selectedContent = await response.json();
-    console.log("Received random topic:", selectedContent);
 
     if (!selectedContent || !selectedContent.content) {
       throw new Error("Invalid topic content received from API");
@@ -411,7 +380,6 @@ async function loadNewText() {
     currentText = selectedContent.content;
     topicTitle.textContent = selectedContent.topic;
 
-    // Reset all timing and counting variables
     startTime = null;
     lastUpdateTime = null;
     totalTime = 0;
@@ -422,13 +390,11 @@ async function loadNewText() {
     completedWords = 0;
     currentWordStart = 0;
 
-    // Clear the interval if it exists
     if (timer) {
       clearInterval(timer);
       timer = null;
     }
 
-    // Reset displays
     wpmDisplay.textContent = "0";
     accuracyDisplay.textContent = "100%";
 
@@ -436,11 +402,8 @@ async function loadNewText() {
     resetTest();
   } catch (error) {
     console.error("Error loading new text:", error);
-    // Fallback to static content if API fails
     const fallbackTopics = getAllFallbackTopics();
     if (!fallbackTopics || fallbackTopics.length === 0) {
-      console.error("No fallback topics available");
-      // Use hardcoded fallback as last resort
       const emergencyFallback = {
         topic: "Data Structures",
         content:
@@ -455,9 +418,7 @@ async function loadNewText() {
       topicTitle.textContent = randomFallback.topic;
     }
 
-    // Ensure we have valid content
     if (!currentText) {
-      console.error("Fallback content is empty, using emergency fallback");
       currentText =
         "A data structure is a specialized format for organizing, processing, retrieving and storing data. Common data structures include arrays, linked lists, stacks, queues, trees, and graphs.";
       topicTitle.textContent = "Data Structures";
@@ -511,8 +472,34 @@ function updateWPM() {
 
   const now = Date.now();
   const timeElapsed = (now - startTime) / 1000 / 60; // in minutes
+
+  // Only update if we have completed at least one word and some time has passed
+  if (completedWords === 0 || timeElapsed < 0.05) {
+    // 3 seconds minimum
+    wpmDisplay.textContent = "0";
+    return;
+  }
+
   const wpm = Math.round(completedWords / timeElapsed);
-  wpmDisplay.textContent = wpm;
+  const displayWpm = Math.min(wpm, 300);
+  wpmDisplay.textContent = displayWpm;
+}
+
+// Update WPM only when words are completed (smoother updates)
+function updateWPMOnWordComplete() {
+  if (!startTime || isZenMode) return;
+
+  const now = Date.now();
+  const timeElapsed = (now - startTime) / 1000 / 60; // in minutes
+
+  if (timeElapsed < 0.05) {
+    wpmDisplay.textContent = "0";
+    return;
+  }
+
+  const wpm = Math.round(completedWords / timeElapsed);
+  const displayWpm = Math.min(wpm, 300);
+  wpmDisplay.textContent = displayWpm;
 }
 
 // Calculate and update accuracy
@@ -530,23 +517,19 @@ function updateAccuracy() {
 
 // Handle keyboard input
 function handleKeyPress(e) {
-  // Prevent default behavior for modifier keys
   if (modifierKeys.includes(e.key)) {
     e.preventDefault();
     return;
   }
 
-  // Handle backspace
   if (e.key === "Backspace") {
     e.preventDefault();
 
-    // Handle Control+Backspace (delete word)
     if (e.ctrlKey) {
       if (currentIndex > 0) {
         const chars = textDisplay.querySelectorAll(".char");
         let wordStart = currentIndex;
 
-        // Find the start of the current word
         while (wordStart > 0 && chars[wordStart - 1].textContent === " ") {
           wordStart--;
         }
@@ -554,59 +537,52 @@ function handleKeyPress(e) {
           wordStart--;
         }
 
-        // Remove all characters in the word from history
         const charsToRemove = currentIndex - wordStart;
         for (let i = 0; i < charsToRemove; i++) {
           typedHistory.pop();
         }
 
-        // Update current index and character states
         currentIndex = wordStart;
         chars[currentIndex].className = "char current";
 
-        // Reset states of characters after the deleted word
         for (let i = wordStart + 1; i < chars.length; i++) {
           chars[i].className = "char";
         }
 
-        // Reset word tracking
         currentWordStart = currentIndex;
         updateAccuracy();
-        updateWPM();
       }
       return;
     }
 
-    // Regular backspace
     if (currentIndex > 0) {
       currentIndex--;
       const chars = textDisplay.querySelectorAll(".char");
 
-      // Remove the last typed character from history
       typedHistory.pop();
 
-      // Update character states
       chars[currentIndex].className = "char current";
       if (currentIndex < chars.length - 1) {
         chars[currentIndex + 1].className = "char";
       }
 
-      // If we're backspacing into a previous word, update word tracking
       if (currentText[currentIndex] === " ") {
         currentWordStart = currentIndex + 1;
+        if (completedWords > 0) {
+          completedWords--;
+          updateWPMOnWordComplete();
+        }
       }
 
       updateAccuracy();
-      updateWPM();
     }
     return;
   }
 
-  // Start the timer on first character
   if (!startTime) {
     startTime = Date.now();
     lastUpdateTime = startTime;
-    timer = setInterval(updateWPM, 500);
+    timer = setInterval(updateWPM, 3000);
   }
 
   const chars = textDisplay.querySelectorAll(".char");
@@ -614,34 +590,34 @@ function handleKeyPress(e) {
     ? currentText[currentIndex].toLowerCase()
     : currentText[currentIndex];
 
-  // Store the state before updating
   const isCorrect = e.key === expectedChar;
   typedHistory.push({
     correct: isCorrect,
     index: currentIndex,
   });
 
-  // Update current character
   chars[currentIndex].className = isCorrect ? "char correct" : "char incorrect";
 
-  // Check if we've completed a word
   if (expectedChar === " " && isCorrect) {
     completedWords++;
+    updateWPMOnWordComplete();
   }
 
-  // Move cursor to next character
+  if (currentIndex === currentText.length - 1 && isCorrect) {
+    const lastChar = currentText[currentText.length - 1];
+    if (lastChar !== " ") {
+      completedWords++;
+      updateWPMOnWordComplete();
+    }
+    loadNewText();
+  }
+
   if (currentIndex < chars.length - 1) {
     chars[currentIndex + 1].className = "char current";
   }
 
   currentIndex++;
   updateAccuracy();
-  updateWPM();
-
-  // Check if we've reached the end of the text
-  if (currentIndex >= currentText.length) {
-    loadNewText();
-  }
 }
 
 // Setup event listeners
