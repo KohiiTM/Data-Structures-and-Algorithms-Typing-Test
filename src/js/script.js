@@ -325,6 +325,22 @@ async function init() {
   }
 }
 
+// Function to highlight current topic in menu
+function highlightCurrentTopic(topicName) {
+  // Remove active class from all topic items
+  document.querySelectorAll(".topic-item").forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  // Find and highlight the current topic
+  const topicItems = document.querySelectorAll(".topic-item");
+  topicItems.forEach((item) => {
+    if (item.textContent === topicName) {
+      item.classList.add("active");
+    }
+  });
+}
+
 // Load a new random text
 async function loadNewText() {
   if (isLoading) return;
@@ -380,6 +396,9 @@ async function loadNewText() {
     currentText = selectedContent.content;
     topicTitle.textContent = selectedContent.topic;
 
+    // Highlight the current topic in the menu
+    highlightCurrentTopic(selectedContent.topic);
+
     startTime = null;
     lastUpdateTime = null;
     totalTime = 0;
@@ -423,6 +442,9 @@ async function loadNewText() {
         "A data structure is a specialized format for organizing, processing, retrieving and storing data. Common data structures include arrays, linked lists, stacks, queues, trees, and graphs.";
       topicTitle.textContent = "Data Structures";
     }
+
+    // Highlight the current topic in the menu for fallback cases
+    highlightCurrentTopic(topicTitle.textContent);
 
     displayText();
     resetTest();

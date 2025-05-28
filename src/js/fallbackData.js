@@ -272,6 +272,97 @@ const FALLBACK_DATA = {
       content:
         "The Boyer-Moore voting algorithm is used to find the majority element in an array. It works by maintaining a count of the current candidate for majority element.",
     },
+    // Additional Sorting Algorithms
+    {
+      topic: "Bubble Sort",
+      category: "Algorithms",
+      content:
+        "Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. It has a time complexity of O(n²) and is not efficient for large lists.",
+    },
+    {
+      topic: "Insertion Sort",
+      category: "Algorithms",
+      content:
+        "Insertion Sort builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort, but it has advantages for small data sets.",
+    },
+    {
+      topic: "Selection Sort",
+      category: "Algorithms",
+      content:
+        "Selection Sort is a simple sorting algorithm that divides the input into a sorted and unsorted region, and repeatedly selects the smallest element from the unsorted region to add to the sorted region.",
+    },
+    {
+      topic: "Heap Sort",
+      category: "Algorithms",
+      content:
+        "Heap Sort is a comparison-based sorting algorithm that uses a binary heap data structure. It divides its input into a sorted and an unsorted region, and iteratively shrinks the unsorted region by extracting the largest element.",
+    },
+    {
+      topic: "Counting Sort",
+      category: "Algorithms",
+      content:
+        "Counting Sort is a non-comparison-based sorting algorithm that works by counting the occurrences of each element in the input array. It is efficient when the range of input data is not significantly greater than the number of objects to be sorted.",
+    },
+    {
+      topic: "Radix Sort",
+      category: "Algorithms",
+      content:
+        "Radix Sort is a non-comparative sorting algorithm that sorts data with integer keys by grouping keys by the individual digits which share the same significant position and value. It can be applied to data that can be sorted lexicographically.",
+    },
+    {
+      topic: "Bucket Sort",
+      category: "Algorithms",
+      content:
+        "Bucket Sort is a sorting algorithm that works by distributing the elements of an array into a number of buckets. Each bucket is then sorted individually, either using a different sorting algorithm or recursively applying the bucket sorting algorithm.",
+    },
+    {
+      topic: "Shell Sort",
+      category: "Algorithms",
+      content:
+        "Shell Sort is an optimization of insertion sort that allows the exchange of items that are far apart. It sorts elements at specific intervals and gradually reduces the interval size until it becomes 1, at which point it becomes a regular insertion sort.",
+    },
+    {
+      topic: "Tim Sort",
+      category: "Algorithms",
+      content:
+        "Tim Sort is a hybrid sorting algorithm derived from merge sort and insertion sort. It is designed to perform well on many kinds of real-world data and is the default sorting algorithm in Python and Java.",
+    },
+    {
+      topic: "Cocktail Sort",
+      category: "Algorithms",
+      content:
+        "Cocktail Sort is a variation of bubble sort that sorts in both directions on each pass through the list. It is slightly more efficient than bubble sort for certain types of data, particularly when the list is nearly sorted.",
+    },
+    {
+      topic: "Comb Sort",
+      category: "Algorithms",
+      content:
+        "Comb Sort is an improvement over bubble sort that eliminates small values at the end of the list quickly. It works by comparing elements separated by a gap that shrinks by a factor of 1.3 in each iteration.",
+    },
+    {
+      topic: "Cycle Sort",
+      category: "Algorithms",
+      content:
+        "Cycle Sort is an in-place, unstable sorting algorithm that minimizes the number of writes to the array. It is based on the idea that the permutation to be sorted can be factored into cycles, which can be individually rotated to give a sorted result.",
+    },
+    {
+      topic: "Gnome Sort",
+      category: "Algorithms",
+      content:
+        "Gnome Sort is a sorting algorithm that is similar to insertion sort, except that moving an element to its proper place is accomplished by a series of swaps, as in bubble sort. It is named after the garden gnome's way of sorting flower pots.",
+    },
+    {
+      topic: "Pancake Sort",
+      category: "Algorithms",
+      content:
+        "Pancake Sort is a sorting algorithm that works by repeatedly flipping portions of the array. The goal is to sort the array by performing a series of prefix reversals, similar to how you might sort a stack of pancakes by flipping portions of the stack.",
+    },
+    {
+      topic: "Bogo Sort",
+      category: "Algorithms",
+      content:
+        "Bogo Sort is a highly inefficient sorting algorithm that works by generating random permutations of the input array until it finds one that is sorted. It is primarily used for educational purposes to demonstrate what not to do in sorting.",
+    },
   ],
   categories: [
     "Data Structures",
