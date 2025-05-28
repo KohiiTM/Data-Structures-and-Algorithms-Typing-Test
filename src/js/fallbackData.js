@@ -277,7 +277,7 @@ const FALLBACK_DATA = {
       topic: "Bubble Sort",
       category: "Algorithms",
       content:
-        "Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. It has a time complexity of O(n²) and is not efficient for large lists.",
+        "Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. It has a time complexity of O(n^2) and is not efficient for large lists.",
     },
     {
       topic: "Insertion Sort",
