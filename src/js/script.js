@@ -399,6 +399,7 @@ async function loadNewText() {
     // Highlight the current topic in the menu
     highlightCurrentTopic(selectedContent.topic);
 
+    // Reset all WPM-related variables
     startTime = null;
     lastUpdateTime = null;
     totalTime = 0;
@@ -409,11 +410,13 @@ async function loadNewText() {
     completedWords = 0;
     currentWordStart = 0;
 
+    // Clear and reset timer
     if (timer) {
       clearInterval(timer);
       timer = null;
     }
 
+    // Reset displays
     wpmDisplay.textContent = "0";
     accuracyDisplay.textContent = "100%";
 
@@ -445,6 +448,27 @@ async function loadNewText() {
 
     // Highlight the current topic in the menu for fallback cases
     highlightCurrentTopic(topicTitle.textContent);
+
+    // Reset all WPM-related variables for fallback case
+    startTime = null;
+    lastUpdateTime = null;
+    totalTime = 0;
+    correctChars = 0;
+    totalChars = 0;
+    currentIndex = 0;
+    typedHistory = [];
+    completedWords = 0;
+    currentWordStart = 0;
+
+    // Clear and reset timer for fallback case
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    // Reset displays for fallback case
+    wpmDisplay.textContent = "0";
+    accuracyDisplay.textContent = "100%";
 
     displayText();
     resetTest();
@@ -497,13 +521,13 @@ function updateWPM() {
 
   // Only update if we have completed at least one word and some time has passed
   if (completedWords === 0 || timeElapsed < 0.05) {
-    // 3 seconds minimum
     wpmDisplay.textContent = "0";
     return;
   }
 
+  // Calculate WPM based on completed words and time elapsed
   const wpm = Math.round(completedWords / timeElapsed);
-  const displayWpm = Math.min(wpm, 300);
+  const displayWpm = Math.min(wpm, 300); // Cap at 300 WPM
   wpmDisplay.textContent = displayWpm;
 }
 
@@ -514,13 +538,15 @@ function updateWPMOnWordComplete() {
   const now = Date.now();
   const timeElapsed = (now - startTime) / 1000 / 60; // in minutes
 
+  // Don't show WPM until at least 3 seconds have passed
   if (timeElapsed < 0.05) {
     wpmDisplay.textContent = "0";
     return;
   }
 
+  // Calculate WPM based on completed words and time elapsed
   const wpm = Math.round(completedWords / timeElapsed);
-  const displayWpm = Math.min(wpm, 300);
+  const displayWpm = Math.min(wpm, 300); // Cap at 300 WPM
   wpmDisplay.textContent = displayWpm;
 }
 
@@ -601,10 +627,11 @@ function handleKeyPress(e) {
     return;
   }
 
+  // Start timing when first key is pressed
   if (!startTime) {
     startTime = Date.now();
     lastUpdateTime = startTime;
-    timer = setInterval(updateWPM, 3000);
+    timer = setInterval(updateWPM, 1000); // Update WPM every second
   }
 
   const chars = textDisplay.querySelectorAll(".char");
@@ -620,11 +647,13 @@ function handleKeyPress(e) {
 
   chars[currentIndex].className = isCorrect ? "char correct" : "char incorrect";
 
+  // Count completed words
   if (expectedChar === " " && isCorrect) {
     completedWords++;
     updateWPMOnWordComplete();
   }
 
+  // Handle last word completion
   if (currentIndex === currentText.length - 1 && isCorrect) {
     const lastChar = currentText[currentText.length - 1];
     if (lastChar !== " ") {
