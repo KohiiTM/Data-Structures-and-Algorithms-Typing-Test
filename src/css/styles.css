@@ -1148,27 +1148,50 @@ body {
 
 .controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.left-controls {
+  display: flex;
+  gap: 1rem;
   align-items: center;
 }
 
-.button {
+.control-btn {
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
   background-color: var(--button-bg);
-  color: var(--text-primary);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
+  color: var(--text-primary);
   transition: all 0.2s ease;
 }
 
-.button:hover {
-  background-color: var(--button-hover);
+.control-btn svg {
+  width: 20px;
+  height: 20px;
 }
 
-.button:active {
-  background-color: var(--button-active);
+.control-btn.active {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.control-btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+.control-btn.active:hover {
+  background-color: var(--accent);
+  opacity: 0.9;
 }
 
 /* Menu styles */
@@ -1596,4 +1619,32 @@ body.zen-mode .topic-title {
 .controls,
 .topic-title {
   transition: all 0.3s ease;
+}
+
+.control-btn {
+  padding: 8px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.control-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.control-btn.active {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.control-btn:hover {
+  background-color: var(--hover-color);
+}
+
+.control-btn.active:hover {
+  background-color: var(--accent-hover-color);
 }

@@ -21,6 +21,8 @@ const textDisplay = document.getElementById("textDisplay");
 const wpmDisplay = document.getElementById("wpm");
 const accuracyDisplay = document.getElementById("accuracy");
 const newTextButton = document.getElementById("newTextButton");
+const repeatButton = document.getElementById("repeatButton");
+const shuffleButton = document.getElementById("shuffleButton");
 const lowercaseToggle = document.getElementById("lowercaseToggle");
 const zenModeToggle = document.getElementById("zenModeToggle");
 const themeButtons = document.querySelectorAll(".theme-btn");
@@ -45,6 +47,9 @@ let currentWordStart = 0;
 let allTopics = [];
 let categories = [];
 let isLoading = false;
+let isRepeatMode = false;
+let isShuffleMode = false; // Default to sequential mode
+let currentTopicIndex = -1; // Track current topic index for sequential loading
 
 // Don't count as input
 const modifierKeys = [
@@ -191,6 +196,46 @@ if (savedFont) {
     }
   });
 }
+
+// Load saved control modes
+const savedRepeatMode = localStorage.getItem("repeat-mode") === "true";
+const savedShuffleMode = localStorage.getItem("shuffle-mode") === "true";
+
+// Set initial states
+isRepeatMode = savedRepeatMode;
+isShuffleMode = savedShuffleMode;
+
+// Update button states
+repeatButton.classList.toggle("active", isRepeatMode);
+shuffleButton.classList.toggle("active", isShuffleMode);
+
+// Toggle repeat mode
+repeatButton.addEventListener("click", () => {
+  isRepeatMode = !isRepeatMode;
+  repeatButton.classList.toggle("active", isRepeatMode);
+  localStorage.setItem("repeat-mode", isRepeatMode);
+
+  // Disable shuffle mode when repeat is active
+  if (isRepeatMode) {
+    isShuffleMode = false;
+    shuffleButton.classList.remove("active");
+    localStorage.setItem("shuffle-mode", false);
+  }
+});
+
+// Toggle shuffle mode
+shuffleButton.addEventListener("click", () => {
+  isShuffleMode = !isShuffleMode;
+  shuffleButton.classList.toggle("active", isShuffleMode);
+  localStorage.setItem("shuffle-mode", isShuffleMode);
+
+  // Disable repeat mode when shuffle is active
+  if (isShuffleMode) {
+    isRepeatMode = false;
+    repeatButton.classList.remove("active");
+    localStorage.setItem("repeat-mode", false);
+  }
+});
 
 // Menu open/close
 menuButton.addEventListener("click", () => {
@@ -381,13 +426,26 @@ async function loadNewText() {
       );
     }
 
-    const response = await fetch(API_ENDPOINTS.randomTopic);
+    let selectedContent;
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (isRepeatMode && currentText) {
+      // Keep the same text
+      selectedContent = {
+        topic: topicTitle.textContent,
+        content: currentText,
+      };
+    } else if (isShuffleMode) {
+      // Shuffle mode (only when explicitly enabled)
+      const response = await fetch(API_ENDPOINTS.randomTopic);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      selectedContent = await response.json();
+    } else {
+      // Sequential mode (default)
+      currentTopicIndex = (currentTopicIndex + 1) % allTopics.length;
+      selectedContent = allTopics[currentTopicIndex];
     }
-
-    const selectedContent = await response.json();
 
     if (!selectedContent || !selectedContent.content) {
       throw new Error("Invalid topic content received from API");
@@ -434,10 +492,19 @@ async function loadNewText() {
       currentText = emergencyFallback.content;
       topicTitle.textContent = emergencyFallback.topic;
     } else {
-      const randomFallback =
-        fallbackTopics[Math.floor(Math.random() * fallbackTopics.length)];
-      currentText = randomFallback.content;
-      topicTitle.textContent = randomFallback.topic;
+      if (isShuffleMode) {
+        // Random fallback
+        const randomFallback =
+          fallbackTopics[Math.floor(Math.random() * fallbackTopics.length)];
+        currentText = randomFallback.content;
+        topicTitle.textContent = randomFallback.topic;
+      } else {
+        // Sequential fallback
+        currentTopicIndex = (currentTopicIndex + 1) % fallbackTopics.length;
+        const fallbackTopic = fallbackTopics[currentTopicIndex];
+        currentText = fallbackTopic.content;
+        topicTitle.textContent = fallbackTopic.topic;
+      }
     }
 
     if (!currentText) {
@@ -678,7 +745,6 @@ function setupEventListeners() {
     // Check if we're interacting with menu or UI elements
     const isMenuClick = e.target.closest("#menu") !== null;
     const isMenuButtonClick = e.target.closest("#menuButton") !== null;
-    const isNewTextButtonClick = e.target.closest("#newTextButton") !== null;
     const isMenuOverlayClick = e.target.closest("#menuOverlay") !== null;
     const isTopicMenuClick = e.target.closest(".topic-menu") !== null;
     const isTopicMenuToggleClick =
@@ -723,7 +789,6 @@ function setupEventListeners() {
         !isTopicMenuOpen &&
         !isMenuClick &&
         !isMenuButtonClick &&
-        !isNewTextButtonClick &&
         !isMenuOverlayClick &&
         !isTopicMenuClick &&
         !isTopicMenuToggleClick &&
@@ -744,7 +809,6 @@ function setupEventListeners() {
     if (
       !isMenuClick &&
       !isMenuButtonClick &&
-      !isNewTextButtonClick &&
       !isMenuOverlayClick &&
       !isTopicMenuClick &&
       !isTopicMenuToggleClick &&
@@ -761,19 +825,6 @@ function setupEventListeners() {
   menuButton.setAttribute("title", "Toggle Settings (Ctrl+P)");
   topicMenuToggle.setAttribute("title", "Toggle Topics (Ctrl+M)");
   topicMenuCollapse.setAttribute("title", "Toggle Topics (Ctrl+M)");
-
-  newTextButton.addEventListener("click", loadNewText);
-
-  // Theme switching
-  themeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const theme = button.dataset.theme;
-      document.body.setAttribute("data-theme", theme);
-      localStorage.setItem("preferred-theme", theme);
-      themeButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-    });
-  });
 }
 
 // Start the application
