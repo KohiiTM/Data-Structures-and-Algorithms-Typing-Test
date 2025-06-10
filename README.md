@@ -1,15 +1,18 @@
+![image](https://github.com/user-attachments/assets/baf83ab4-8440-47da-8be7-0d300f5a4a71)
+
+
 # DSA Typing Practice
 
 A modern, interactive web application designed to help developers improve their typing speed while learning Data Structures and Algorithms concepts. This project combines typing practice with technical content to create an engaging learning experience.
 
-## 🎯 Learning Objectives
+##  Learning Objectives
 
 - **Typing Proficiency**: Improve typing speed and accuracy while working with technical content
 - **DSA Knowledge**: Learn and reinforce understanding of key Data Structures and Algorithms concepts
 - **Problem-Solving Skills**: Practice common problem-solving patterns and techniques
 - **System Design Understanding**: Learn fundamental system design concepts and patterns
 
-## 📚 Content Categories
+##  Content Categories
 
 The application includes comprehensive content across four main categories:
 
@@ -39,7 +42,7 @@ The application includes comprehensive content across four main categories:
 - Algorithm applications (Binary Search, Greedy Algorithms)
 - Advanced patterns (Backtracking, Floyd Cycle Finding)
 
-## ✨ Features
+##  Features
 
 - **Real-time Performance Tracking**
 
@@ -61,7 +64,7 @@ The application includes comprehensive content across four main categories:
   - Collapsible topic menu
   - Offline support with fallback data
 
-## 🚀 Getting Started
+##  Getting Started
 
 1. Clone the repository:
 
@@ -81,7 +84,7 @@ The application includes comprehensive content across four main categories:
 
 3. Start practicing!
 
-## 🎮 Usage
+##  Usage
 
 - Use `Ctrl+P` to open settings
 - Use `Ctrl+M` to toggle the topic menu
@@ -100,7 +103,7 @@ The application includes comprehensive content across four main categories:
 
 Contributions are welcome. Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Inspired by [MonkeyType](https://monkeytype.com/)'s clean interface and typing experience
 - Built to help developers improve both typing speed and DSA knowledge
@@ -125,6 +128,6 @@ The application uses these endpoints to load typing content dynamically.
 - Fetch API for interacting with the backend.
 - `localStorage` for saving user preferences (theme, font, modes).
 
-## 📝 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
