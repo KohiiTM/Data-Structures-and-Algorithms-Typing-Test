@@ -312,6 +312,7 @@ async function testApiResponse() {
 
 async function init() {
   try {
+    await loadLocalData();
     await loadNewText();
     setupEventListeners();
     textDisplay.focus();
@@ -338,28 +339,6 @@ async function loadNewText() {
   isLoading = true;
 
   try {
-    if (useLocalData) {
-      await loadLocalData();
-    } else {
-      const isHealthy = await checkApiHealth();
-      if (!isHealthy) {
-        useLocalData = true;
-        await loadLocalData();
-        return;
-      }
-
-      if (allTopics.length === 0) {
-        const data = await testApiResponse();
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid API response format: Expected an array.");
-        }
-        allTopics = data;
-        await loadCategories();
-        const categorizedTopics = categorizeTopics(allTopics);
-        populateTopicLists(categorizedTopics);
-      }
-    }
-
     let selectedContent;
 
     if (isRepeatMode && currentText) {
@@ -368,15 +347,7 @@ async function loadNewText() {
         content: currentText,
       };
     } else if (isShuffleMode) {
-      if (useLocalData) {
-        selectedContent = getRandomFallbackTopic();
-      } else {
-        const response = await fetch(API_ENDPOINTS.randomTopic);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        selectedContent = await response.json();
-      }
+      selectedContent = getRandomFallbackTopic();
     } else {
       currentTopicIndex = (currentTopicIndex + 1) % allTopics.length;
       selectedContent = allTopics[currentTopicIndex];
@@ -413,7 +384,6 @@ async function loadNewText() {
     resetTest();
   } catch (error) {
     console.error("Error loading new text:", error);
-    await loadLocalData();
     const fallbackTopics = getAllFallbackTopics();
     if (!fallbackTopics || fallbackTopics.length === 0) {
       const emergencyFallback = {
